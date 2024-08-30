@@ -1,0 +1,15 @@
+<p-toast key="key" [baseZIndex]="99999"></p-toast>
+<ng-template [ngIf]="loading">
+    <app-crud-generic
+        [pageLabel]="pageLabel"
+        [tableCols]="tableCols"
+        [listeObject]="listeObject"
+        [formGroup]="formGroup"
+        [formCols]="formCols"
+        [closeDialog]="closeDialog"
+        [formHeader]="formHeader"
+        [dropdownList]="ddListRegion"
+        (newItemEvent)="onSave($event)"
+        (removeEvent)="onDelete($event)">
+    </app-crud-generic>
+</ng-template><p>province works!</p>

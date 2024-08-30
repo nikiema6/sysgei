@@ -1,0 +1,15 @@
+<app-share-confirm-toast></app-share-confirm-toast>
+<ng-template [ngIf]="loading">
+    <app-crud-generic
+        [pageLabel]="pageLabel"
+        [tableCols]="tableCols"
+        [listeObject]="listeObject"
+        [formGroup]="formGroup"
+        [formCols]="formCols"
+        [closeDialog]="closeDialog"
+        [formHeader]="formHeader"
+        (newItemEvent)="onSave($event)"
+        (removeEvent)="onDelete($event)"
+        [dropdownList]="dropDownList">
+    </app-crud-generic>
+</ng-template>

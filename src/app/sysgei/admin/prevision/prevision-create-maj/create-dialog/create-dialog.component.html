@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="row g-1">
+        <div class="col-sm-5" *ngIf="!consultation">
+            <div class="card" style="height: 100%;">
+                <div class="card-body">
+                    <p-table #dt [columns]="tableSfCols" [value]="soufamilleList"
+                             dataKey="idSousfamille" [scrollable]="true" scrollHeight="600px" [rows]="10"
+                             styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped"
+                             [globalFilterFields]="['libelleFamille', 'libelle']"
+                             [(selection)]="listValeurPrevision"
+                             [metaKeySelection]="false" selectionMode="multiple"
+                             [responsive]="true">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th width="5%" class="fw-bold">N°</th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field"
+                                    [style.width]="col.width" class="fw-bold">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                                <th  style="width:10%" class="text-center fw-bold">
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th width="5%"></th>
+                                <th *ngFor="let col of columns" [style.width]="col.width">
+                                    <div *ngIf="col.filter" class="grid p-fluid">
+                                        <div class="col-12 md:col-12">
+                                <span class="p-input-icon-left mb-1">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="Recherche"
+                                           style="width: 100%" class="p-fluid"
+                                           (input)="dt.filter($event.target.value, col.field,'contains')"/>
+                                </span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="width:10%; text-align: center"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
+                            <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="ri">
+                                <td width="5%"> {{ri + 1}}</td>
+                                <td *ngFor="let col of columns">
+                                    <span *ngIf="col.type === 'string'"> {{rowData[col.field]}}</span>
+                                </td>
+                                <td style="text-align:center">
+                                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="row d-flex">
+                                <div class="col-sm-3 mt-2 me-auto">
+                                    Nbr ligne: {{soufamilleList.length}}
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7" [ngClass]="{'col-sm-12': consultation}">
+            <div class="row g-1">
+                <div class="col-sm-12">
+                    <form [formGroup]="formGroup" autocomplete="off" role="form">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-5 p-fluid" *ngIf="formGroup.get('id').value !== null">
+                                        <div class="field">
+                                            <label htmlFor="reference" class="form-label fw-bold">Référence
+                                            </label>
+                                            <input [readOnly]="true" name="reference"
+                                                   id="reference" pInputText type="text" formControlName="reference">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 p-fluid">
+                                        <div class="field mt-2">
+                                            <label class="fw-bold">Structure
+                                                <span class="text-danger fw-bold">*</span>
+                                            </label>
+                                            <p-dropdown [options]="ddStrcuture" [style]="{'width': '100%'}"
+                                                        [autoDisplayFirst]="false" appendTo="body"
+                                                        placeholder="Selectionner la structure"
+                                                        [filter]="true" [showClear]="true"
+                                                        formControlName="structureId">
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12">
+                    <app-prevision-val-table
+                    [consultation]="consultation"
+                    [exercice]="currentExercice"
+                    [listValeurPrevision]="listValeurPrevision"
+                    (deleteRow)="deleteRow($event)">
+
+                    </app-prevision-val-table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 mt-4">
+            <p-toolbar class="bg-tolbar">
+                <div class="p-toolbar-group-left">
+                </div>
+                <div class="p-toolbar-group-right">
+                    <button pButton pRipple class="p-button p-button-danger me-1" label="Fermer"
+                            icon="pi pi-times" (click)="onClose()">
+                    </button>
+                    <button pButton pRipple icon="pi pi-check" type="button" label="Enregistre"
+                            (click)="save()" [disabled]="formGroup.invalid"
+                            *ngIf="!consultation" class="p-button p-button-success">
+                    </button>
+                </div>
+            </p-toolbar>
+        </div>
+    </div>
+</div>

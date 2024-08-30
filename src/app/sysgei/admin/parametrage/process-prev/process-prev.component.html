@@ -1,0 +1,67 @@
+<app-share-confirm-toast></app-share-confirm-toast>
+<div class="col-sm-12">
+    <div class="card">
+        <p-toolbar styleClass="mb-2">
+            <div class="p-toolbar-group-start">
+                <div class="my-2">
+                    <h5>Les process d'ouverture et fermeture</h5>
+                </div>
+            </div>
+            <div class="p-toolbar-group-end">
+                <button pButton pRipple label="Ouvrire la saisie Prévision" icon="pi pi-plus"
+                        class="p-button-primary mr-2 me-1" (click)="openPrevision()">
+                </button>
+                <button pButton pRipple label="Clôturer la saisie Prévision" icon="pi pi-plus"
+                        class="p-button-primary mr-2" (click)="closePrevision()">
+                </button>
+            </div>
+        </p-toolbar>
+    </div>
+
+    <p-table #dt [columns]="tableCols" [value]="listProcess" selectionMode="single"
+             dataKey="id" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
+             [responsive]="true" paginatorPosition="bottom">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th width="5%" class="fw-bold">N°</th>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="fw-bold">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th style="width:20%" class="text-center fw-bold">Action</th>
+            </tr>
+
+            <tr>
+                <th width="5%"></th>
+                <th *ngFor="let col of columns" [style.width]="col.width">
+                        <span class="p-input-icon-left" *ngIf="col.filter">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Recherche"
+                                   style="width: 100%"
+                                   (input)="dt.filter($event.target.value, col.field,'contains')"/>
+                        </span>
+                </th>
+                <th style="width:20%"></th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
+            <tr [pSelectableRow]="rowData">
+                <td width="5%"  [ngClass]="{'bg-info text-white': !rowData.dateFin}"> {{ri + 1}}</td>
+                <td *ngFor="let col of columns" [ngClass]="{'bg-info text-white': !rowData.dateFin}">
+                    <span *ngIf="col.type === 'string'"> {{rowData[col.field]}}</span>
+                    <span *ngIf="col.type === 'number'"> {{rowData[col.field] | mask: 'separator'}}</span>
+                    <span *ngIf="col.type === 'date'"> {{rowData[col.field] | date: 'dd/MM/yyyy'}}</span>
+                </td>
+
+                <td style="text-align:center" [ngClass]="{'bg-info text-white': !rowData.dateFin}" >
+                    <button pButton pRipple type="button" icon="pi pi-times"
+                            class="p-button-rounded p-button-danger mb-2"
+                            (click)="annuler(rowData)" pTooltip="Annuler"
+                            [tooltipPosition]="'top'">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

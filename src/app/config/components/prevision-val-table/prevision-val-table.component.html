@@ -1,0 +1,80 @@
+<p-table #dt #gFiltre [columns]="cols" [value]="listValeurPrevision" selectionMode="single"
+         dataKey="idSousfamille"
+         [scrollable]="true" scrollHeight="300px"
+         styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped"
+         [globalFilterFields]="['libelleFamille', 'libelleSousFamille']"
+         [metaKeySelection]="false" [responsive]="true">
+    <ng-template pTemplate="caption">
+        <div class="row d-flex">
+            <div class="col-sm-12 mt-2 text-center"> Détail prévision</div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th width="5%" class="fw-bold">N°</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field"
+                [style.width]="col.width" class="fw-bold">
+                {{col.header}}
+                <p-sortIcon *ngIf="col.filter"  [field]="col.field"></p-sortIcon>
+            </th>
+            <th>Total</th>
+            <th  style="width:10%" class="text-center fw-bold" *ngIf="!consultation">Action</th>
+        </tr>
+
+        <tr>
+            <th width="5%"></th>
+            <th *ngFor="let col of columns" [style.width]="col.width">
+                <div *ngIf="col.filter" class="grid p-fluid">
+                    <div class="col-12 md:col-12">
+                                <span class="p-input-icon-left mb-1">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="Recherche"
+                                           style="width: 100%" class="p-fluid"
+                                           (input)="dt.filter($event.target.value, col.field,'contains')"/>
+                                </span>
+                    </div>
+                </div>
+            </th>
+            <th style="width:10%"></th>
+            <th style="width:10%" *ngIf="!consultation"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
+        <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="ri">
+            <td width="5%"> {{ri + 1}}</td>
+            <td *ngFor="let col of columns">
+                <ng-container *ngIf="consultation">
+                    <span [ngClass]="{'fw-bold': col.type === 'input'}"> {{rowData[col.field]}}</span>
+                </ng-container>
+                <ng-container *ngIf="!consultation">
+                    <span *ngIf="col.type === 'string'"> {{rowData[col.field]}}</span>
+                    <span *ngIf="col.type === 'input'">
+                            <span  class="field p-fluid ng-imput-number">
+                                    <p-inputNumber [name]="col.field+ri" mask="separator"
+                                                   [id]="col.field+ri" [(ngModel)]="rowData[col.field]" mode="decimal"
+                                                   [min]="0">
+                                    </p-inputNumber>
+                                </span>
+                                        </span>
+                </ng-container>
+            </td>
+            <td>{{rowData.valAnne0 + rowData.valAnne1 + rowData.valAnne2}}</td>
+            <td style="text-align:center" *ngIf="!consultation">
+                <button pButton pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-danger mb-2"
+                        (click)="delete(rowData)" pTooltip="Supprimer"
+                        [tooltipPosition]="position">
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="row d-flex">
+            <div class="col-sm-3 mt-2 me-auto">
+                Nbr ligne: {{listValeurPrevision.length}}
+            </div>
+        </div>
+    </ng-template>
+</p-table>
+

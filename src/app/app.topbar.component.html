@@ -1,0 +1,31 @@
+<div class="layout-topbar">
+    <a href="#" class="layout-topbar-logo">
+        <img id="topbar-logo" src="assets/layout/images/default-user.png">
+        <span>
+            {{userProfile?.username}} <br>
+            <span style="color: #1e1f20">{{userProfile?.firstName}} {{userProfile?.lastName}}</span>
+        </span>
+    </a>
+
+    <a href="#" class="layout-menu-button" (click)="app.onMenuButtonClick($event)">
+        <i class="pi pi-bars"></i>
+    </a>
+
+    <ul class="layout-topbar-icons">
+        <li>
+            <a href="#" class="layout-topbar-icon-blue" (click)="logout()">
+                <i class="pi pi-power-off"></i>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="layout-topbar-icons">
+        <li>
+            <a href="#" class="layout-topbar-icon-yellow">
+                <i class="pi pi-calendar"></i>
+            </a>
+            <span class="fw-bold"> Exercice: {{selectedExercie?.annee}}</span>
+        </li>
+    </ul>
+
+</div>

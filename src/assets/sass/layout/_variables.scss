@@ -1,0 +1,53 @@
+$fontFamily:'Lato',sans-serif;
+$fontSize:14px;
+$textColor:#666666;
+$textSecondaryColor:#848484;
+$borderRadius:2px;
+$transitionDuration:.2s;
+$overlayBorder:0 none !default;
+$overlayShadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12) !default;
+$animationDuration:.4s !default;
+$animationTimingFunction:cubic-bezier(.05,.74,.2,.99) !default;
+
+//main
+$bodyBgColor:#f4f4f4;
+
+$footerBgColor:#ffffff;
+$footerBorderColor:#dadada;
+
+$dividerColor:#dadcda;
+
+//light menu
+$menuBgColor:#ffffff;
+$menuitemTextColor:#666666;
+$menuitemIconColor:#a6a6a6;
+$menuitemHoverBgColor:#eaeaea;
+$menuitemIconHoverColor:#666666;
+$rootMenuitemActiveBgColor:$primaryColor;
+$rootMenuitemActiveIconColor:$primaryTextColor;
+$rootMenuitemActiveTextColor:$primaryTextColor;
+$submenuItemActiveColor:$primaryTextColor;
+$submenuitemBgColor:#f8f8f8;
+
+//dark menu
+$darkMenuBgColor:#333333;
+$darkMenuitemTextColor:#c8c8c8;
+$darkMenuitemIconColor:#a6a6a6;
+$darkMenuitemHoverBgColor:#474747;
+$darkMenuitemIconHoverColor:#dadada;
+$darkRootMenuitemActiveBgColor:$primaryColor;
+$darkRootMenuitemActiveIconColor:$primaryTextColor;
+$darkRootMenuitemActiveTextColor:$primaryTextColor;
+$darkSubmenuItemActiveColor:$primaryTextColor;
+$darkSubmenuitemBgColor:#282828;
+
+$slimMenuTooltipBgColor:#333333;
+$slimMenuTooltipTextColor:#c8c8c8;
+
+//accent
+$accentColor: #1976D2 !default;
+$accentTextColor: #ffffff !default;
+
+//sidebar right
+$rightSidebarWidth: 16rem !default;
+$rightSidebarBg: #ffffff !default;

@@ -1,0 +1,72 @@
+<div class="col-sm-12">
+    <div class="card">
+        <p-toolbar styleClass="mb-2">
+            <div class="p-toolbar-group-start">
+                <div class="my-2">
+                    <h5>La centralisation des prevision</h5>
+                </div>
+            </div>
+            <div class="p-toolbar-group-end">
+            </div>
+        </p-toolbar>
+
+        <div class="row g-1">
+            <div class="col-sm-9">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-sm-4 p-fluid">
+                            <div class="field mt-2">
+                                <label class="fw-bold">Exercice
+                                </label>
+                                <p-dropdown [options]="ddExercice" [style]="{'width': '100%'}"
+                                            [autoDisplayFirst]="false" appendTo="body"
+                                            placeholder="Selectionner l'exercice"
+                                            [filter]="true" [showClear]="true"
+                                            [(ngModel)]="critere.exerciceId"
+                                            (ngModelChange)="exerciceChange()">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 p-fluid">
+                            <div class="field mt-2">
+                                <label class="fw-bold">Structure
+                                </label>
+                                <p-dropdown [options]="ddStrucure" [style]="{'width': '100%'}"
+                                            [autoDisplayFirst]="false" appendTo="body"
+                                            placeholder="Selectionner la structure"
+                                            [filter]="true" [showClear]="true"
+                                            [(ngModel)]="critere.structureId">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 text-center">
+                <div class="card h-100">
+                    <div class="mt-3">
+                        <button  pButton label="Rechercher" icon="pi pi-search"
+                                 pTooltip="Lancer la recherche"
+                                 [tooltipPosition]="position"
+                                 class="p-button-primary" (click)="search()">
+                        </button>
+                        <button  pButton label="Imprimer" icon="pi pi-print"
+                                 pTooltip="Test de report"
+                                 [tooltipPosition]="position"
+                                 class="p-button-secondary ms-1" (click)="printReport()">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <ng-template [ngIf]="loading">
+                    <app-prevision-val-table
+                        [consultation]="true"
+                        [exercice]="selectedExercice"
+                        [listValeurPrevision]="listValeurPrevision">
+                    </app-prevision-val-table>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

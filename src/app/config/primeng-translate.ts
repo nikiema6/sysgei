@@ -1,0 +1,33 @@
+export function initLocalInfos(): any {
+    return {
+        firstDayOfWeek: 1,
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout',
+            'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jui', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+        today: 'Aujourd\'hui',
+        dateFormat: 'dd/mm/yy',
+        weekHeader: 'Wk',
+        emptyMessage: "Aucun résultat trouvé",
+        emptyFilterMessage: "Aucun résultat trouvé - Filtre",
+        choose: "Choisir",
+        upload: "Télécharger",
+        cancel: "Annuler",
+        startsWith: "Commence avec",
+        contains: "Contient",
+        notContains: "Ne contient pas",
+        endsWith: "Se termine par",
+        equals: "Équivaut à",
+        notEquals: "Pas égal",
+        clear: "Dégager",
+        apply: "Appliquer",
+        matchAll: "Faire correspondre tout",
+        matchAny: "Correspondre à n'importe quel",
+        addRule: "Ajouter une règle",
+        removeRule: "Supprimer la règle",
+        accept: "Oui",
+        reject: "Non"
+    };
+}

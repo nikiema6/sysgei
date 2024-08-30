@@ -1,0 +1,21 @@
+<div class="login-body">
+    <div class="login-topbar">
+            <img src="assets/layout/images/logo-olympia-white.png" alt="olympia-layout"/>
+            <span class="app-title">Olympia</span>
+    </div>
+    <div class="login-panel">
+        <h1>SIGN IN TO OLYMPIA</h1>
+        <p>Welcome, please use the form to sign-in.</p>
+            <div class="input-wrapper">
+                <label for="username">Username</label>
+                <input type="text" autocomplete="off" id="username" class="p-inputtext p-component">
+            </div>
+            <div class="input-wrapper">
+                <label for="password">Password</label>
+                <input type="password" autocomplete="off" id="password" class="p-inputtext p-component">
+            </div>
+            <button type="button" [routerLink]="['/']" pButton pRipple label="Login"></button>
+
+        <div class="separator"></div>
+    </div>
+</div>

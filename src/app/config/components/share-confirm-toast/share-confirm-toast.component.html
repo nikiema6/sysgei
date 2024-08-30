@@ -1,0 +1,9 @@
+<p-toast key="key" [baseZIndex]="1199999"></p-toast>
+<p-confirmDialog #cd [style]="{width: '30vw'}" [baseZIndex]="2000000" rejectButtonStyleClass="p-button-text">
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" class="p-button-danger" label="NON"
+                (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="p-button-success" label="OUI"
+                (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>

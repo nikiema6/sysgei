@@ -1,0 +1,162 @@
+<app-share-confirm-toast></app-share-confirm-toast>
+<div class="col-sm-12">
+    <div class="card">
+        <p-toolbar styleClass="mb-2">
+            <div class="p-toolbar-group-start">
+                <div class="my-2">
+                    <h5>Gestion des exercices</h5>
+                </div>
+            </div>
+            <div class="p-toolbar-group-end">
+                <button pButton pRipple label="Ajouter" icon="pi pi-plus"
+                        class="p-button-primary mr-2" (click)="openNew()">
+                </button>
+            </div>
+        </p-toolbar>
+
+        <p-table #dt [columns]="tableCols" [value]="exerciceList" selectionMode="single"
+                 dataKey="id" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
+                 [globalFilterFields]="['annee', 'dateDebut', 'dateFin']"
+                 [responsive]="true" paginatorPosition="bottom">
+            <ng-template pTemplate="caption">
+                <div class="row d-flex">
+                    <div class="col-sm-6 ms-auto">
+                        <span class="p-input-icon-left mb-1 w-100">
+                             <i class="pi pi-search"></i>
+                                        <input pInputText type="text" #dt class="p-fluid w-100"
+                                               (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                               placeholder="Rechercher"/>
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th width="5%" class="fw-bold">N°</th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="fw-bold">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                    <th style="width:20%" class="text-center fw-bold">Action</th>
+                </tr>
+
+                <tr>
+                    <th width="5%"></th>
+                    <th *ngFor="let col of columns" [style.width]="col.width">
+                        <span class="p-input-icon-left" *ngIf="col.filter">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Recherche"
+                                   style="width: 100%"
+                                   (input)="dt.filter($event.target.value, col.field,'contains')"/>
+                        </span>
+                    </th>
+                    <th style="width:20%"></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
+                <tr [pSelectableRow]="rowData">
+                    <td width="5%"> {{ri + 1}}</td>
+                    <td *ngFor="let col of columns">
+                        <span *ngIf="col.type === 'string'"> {{rowData[col.field]}}</span>
+                        <span *ngIf="col.type === 'number'"> {{rowData[col.field] | mask: 'separator'}}</span>
+                        <span *ngIf="col.type === 'date'"> {{rowData[col.field] | date: 'dd/MM/yyyy'}}</span>
+                        <span *ngIf="col.type === 'boolean'">
+                                <span *ngIf="rowData[col.field]">
+                                    <span class="ng-badge success">
+                                        {{col.labelTrue}}
+                                    </span>
+                                </span>
+                                <span *ngIf="!rowData[col.field]">
+                                    <span class="ng-badge warning">
+                                        {{col.labelFalse}}
+                                    </span>
+                                </span>
+                            </span>
+                        <span *ngIf="col.type === 'list'">
+                                <span *ngFor="let val of rowData[col.field]">
+                                    <span class="ng-badge info">
+                                        {{val[col.optionLabel]}}
+                                    </span>
+                                </span>
+                            </span>
+                    </td>
+
+                    <td style="text-align:center">
+                        <button pButton pRipple type="button" icon="pi pi-check-circle"
+                                class="p-button-rounded p-button-secondary me-1 mb-2"
+                                (click)="activerExercice(rowData)"
+                                pTooltip="Activer l'exercice" [tooltipPosition]="position">
+                        </button>
+                        <button pButton pRipple type="button" icon="pi pi-pencil"
+                                class="p-button-rounded p-button-info me-1 mb-2"
+                                (click)="update(rowData)" pTooltip="Modifier"
+                                [tooltipPosition]="position">
+                        </button>
+                        <button pButton pRipple type="button" icon="pi pi-times"
+                                class="p-button-rounded p-button-danger mb-2"
+                                (click)="delele(rowData)" pTooltip="Supprimer"
+                                [tooltipPosition]="position">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-dialog (onHide)="hidDialog()" [modal]="true" header="Création/MAJ d'exercice" [(visible)]="display"
+          [style]="{width: '40vw'}" class="p-fluid" styleClass="ng-dialog">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formGroup" autocomplete="off" role="form">
+            <div class="row p-fluid">
+                <div class="col-sm-12">
+                    <div class="field">
+                        <label for="annee" class="form-label fw-bold">Année
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <p-inputNumber name="annee" id="annee" mode="decimal"
+                                       [showButtons]="true"
+                                       [min]="0"  formControlName="annee">
+                        </p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="field">
+                        <label for="dateDebut" class="form-label fw-bold">Date début
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <p-calendar [showIcon]="true" id="dateDebut"
+                                    formControlName="dateDebut"
+                                    name="dateDebut" appendTo="body"
+                                    [locale]="bf" dateFormat="dd/mm/yy" inputId="icon">
+                        </p-calendar>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="field">
+                        <label for="dateFin" class="form-label fw-bold">Date fin
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <p-calendar [showIcon]="true" id="dateFin"
+                                    formControlName="dateFin"
+                                    name="dateFin" appendTo="body"
+                                    [locale]="bf" dateFormat="dd/mm/yy" inputId="icon">
+                        </p-calendar>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <p-footer>
+        <button type="button" pRipple pButton icon="pi pi-times" (click)="hidDialog()" label="Annuler"
+                class="p-button-secondary position-left">
+        </button>
+        <button [disabled]="formGroup.invalid" pRipple pButton type="button" (click)="save()" icon="pi pi-check"
+                label="Enregistrer">
+        </button>
+    </p-footer>
+</p-dialog>

@@ -1,0 +1,71 @@
+<ng-container *ngIf="col.visible" [formGroup]="form">
+    <span *ngIf="col.type == 'string' ">
+        <div class="field">
+             <label [htmlFor]="col.field" class="form-label fw-bold">{{col.header}}
+                 <span class="text-danger fw-bold" *ngIf="col.required">*</span>
+            </label>
+            <input [readOnly]="col.readonly" [name]="col.field" [id]="col.field" pInputText type="text" [formControlName]="col.field">
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'number' ">
+        <div class="field">
+            <label [htmlFor]="col.field" class="form-label fw-bold">{{col.header}}
+                <span class="text-danger fw-bold" *ngIf="col.required">*</span>
+            </label>
+            <p-inputNumber [name]="col.field" [id]="col.field" mode="decimal"
+                           [showButtons]="true"
+                           [readonly]="col.readonly"
+                           [min]="0" [formControlName]="col.field">
+            </p-inputNumber>
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'boolean' ">
+        <div class="form-check mt-3 mb-4">
+                <p-checkbox [name]="col.field" [formControlName]="col.field" [binary]="true"
+              [id]="col.field" [label]="col.header"></p-checkbox>
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'dropdown' ">
+        <div class="field">
+             <label [htmlFor]="col.field" class="form-label fw-bold">{{col.header}}
+                 <span class="text-danger fw-bold" *ngIf="col.required">*</span>
+            </label>
+            <p-dropdown [options]="dropDownObject[col.field]"
+                        [autoDisplayFirst]="false"
+                        [name]="col.field" appendTo="body"
+                        [filter]="true" [showClear]="true"
+                        [formControlName]="col.field">
+            </p-dropdown>
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'date' ">
+        <div class="field p-fluid">
+             <label [htmlFor]="col.field" class="form-label fw-bold">{{col.header}}
+                 <span class="text-danger fw-bold" *ngIf="col.required">*</span>
+            </label>
+            <p-calendar [showIcon]="true" [id]="col.field"
+                        [formControlName]="col.field" appendTo="body"
+                        [name]="col.field"
+                        [locale]="bf" dateFormat="dd/mm/yy" inputId="icon">
+            </p-calendar>
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'multiselect' ">
+        <div class="field p-fluid">
+             <label [htmlFor]="col.field" class="form-label fw-bold">{{col.header}}
+                 <span class="text-danger fw-bold" *ngIf="col.required">*</span>
+            </label>
+            <p-multiSelect [id]="col.field" [options]="multiSelectObject[col.field]"
+                           [optionLabel]="col.optionLabel" [dataKey]="col.key"
+                           [formControlName]="col.field"
+                           [appendTo]="'body'" [virtualScroll]="true" [itemSize]="34"
+                           [filter]="true">
+            </p-multiSelect>
+        </div>
+    </span>
+</ng-container>

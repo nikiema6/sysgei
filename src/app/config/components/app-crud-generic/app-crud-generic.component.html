@@ -1,0 +1,160 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <p-toolbar styleClass="mb-2">
+                <div class="p-toolbar-group-start">
+                    <div class="my-2">
+                        <h5 class="uppercase">{{pageLabel}}</h5>
+                    </div>
+                </div>
+                <div class="p-toolbar-group-end" *ngIf="!consultation">
+                    <button  pButton label="Ajouter" icon="pi pi-plus"
+                             pTooltip="Ajouter un nouvel enregistrement"
+                             tooltipPosition="left"
+                             class="p-button-primary mr-2" (click)="openNew()">
+                    </button>
+                </div>
+            </p-toolbar>
+
+            <div class="row p-2">
+                <ng-container *ngIf="addFilter">
+                    <div class="col-sm-3 mb-1" *ngFor="let r of searchField">
+                        <div class="field">
+                            <label class="fw-bold">{{r['label']}}</label>
+                            <p-dropdown [options]="r['list']" [style]="{'width': '100%'}"
+                                        [autoDisplayFirst]="false" appendTo="body"
+                                        [placeholder]="r['placeHolder']"
+                                        [filter]="true" [showClear]="true"
+                                        [(ngModel)]="value"
+                                        (ngModelChange)="onFilterChange(r['field'])">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="col-sm-12">
+                    <p-table #dt #gFiltre [columns]="tableCols" [value]="listeObject" selectionMode="single"
+                             dataKey="id" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines p-datatable-sm p-datatable-striped"
+                             [globalFilterFields]="filterFiels"
+                             [responsive]="true" paginatorPosition="bottom">
+                        <ng-template pTemplate="caption">
+                            <div class="row d-flex">
+                                <div class="col-sm-6 ms-auto">
+                                    <span class="p-input-icon-left mb-1 w-100">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText type="text" #dt class="p-fluid w-100"
+                                               (input)="gFiltre.filterGlobal($event.target.value, 'contains')"
+                                               placeholder="Rechercher"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th width="5%" class="fw-bold">N°</th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field"
+                                    [style.width]="col.width" class="fw-bold">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                                <th *ngIf="!consultation" style="width:10%" class="text-center fw-bold">Actions</th>
+                            </tr>
+
+                            <tr>
+                                <th width="5%"></th>
+                                <th *ngFor="let col of columns" [style.width]="col.width">
+                                    <div *ngIf="col.filter" class="grid p-fluid">
+                                        <div class="col-12 md:col-12">
+                                            <span class="p-input-icon-left mb-1">
+                                                <i class="pi pi-search"></i>
+                                                <input type="text" pInputText placeholder="Recherche"
+                                                       style="width: 100%" class="p-fluid"
+                                                       (input)="dt.filter($event.target.value, col.field,'contains')"/>
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="width:10%" *ngIf="!consultation"></th>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
+                            <tr [pSelectableRow]="rowData">
+                                <td width="5%"> {{ri + 1}}</td>
+
+
+                                <td *ngFor="let col of columns">
+                                    <span *ngIf="col.type === 'string'"> {{rowData[col.field]}}</span>
+                                    <span
+                                        *ngIf="col.type === 'number'"> {{rowData[col.field] | mask: 'separator'}}</span>
+                                    <span
+                                        *ngIf="col.type === 'date'"> {{rowData[col.field] | date: 'dd/MM/yyyy'}}</span>
+                                    <span *ngIf="col.type === 'boolean'">
+                                <span *ngIf="rowData[col.field]">
+                                    <span class="ng-badge success">
+                                        {{col.labelTrue}}
+                                    </span>
+                                </span>
+                                <span *ngIf="!rowData[col.field]">
+                                    <span class="ng-badge warning">
+                                        {{col.labelFalse}}
+                                    </span>
+                                </span>
+                            </span>
+                                    <span *ngIf="col.type === 'list'">
+                                <span *ngFor="let val of rowData[col.field]">
+                                    <span class="ng-badge info">
+                                        {{val[col.optionLabel]}}
+                                    </span>
+                                </span>
+                            </span>
+                                </td>
+                                <td style="text-align:center" *ngIf="!consultation">
+                                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                                            class="p-button-rounded p-button-info me-1 mb-2"
+                                            (click)="edit(rowData)" pTooltip="Modifier" [tooltipPosition]="position">
+                                    </button>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                            class="p-button-rounded p-button-danger mb-2"
+                                            (click)="delele(rowData)" pTooltip="Supprimer" [tooltipPosition]="position">
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog [baseZIndex]="90000" (onHide)="hidDialog()" [modal]="true" [header]="formHeader" [(visible)]="display"
+          [style]="{width: '40vw'}" class="p-fluid" styleClass="ng-dialog">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formGroup" autocomplete="off" role="form">
+            <div class="row p-fluid">
+                <ng-container *ngFor="let col of formCols">
+                    <div class="mb-2" *ngIf="col.visible"
+                         [ngClass]="{'col-sm-6': formCols.length >=10 , 'col-sm-12': formCols.length < 10 }">
+                        <app-form-input-template
+                            [col]="col"
+                            [dropDownObject]="dropDownObject"
+                            [multiSelectObject]="multiselectObject"
+                            [form]="formGroup">
+                        </app-form-input-template>
+                    </div>
+                </ng-container>
+            </div>
+        </form>
+    </ng-template>
+    <p-footer>
+        <button type="button" pRipple pButton icon="pi pi-times" (click)="hidDialog()" label="Annuler"
+                class="p-button-secondary position-left"></button>
+        <button [disabled]="formGroup.invalid" pRipple pButton type="button" (click)="save()" icon="pi pi-save"
+                label="Enregistrer">
+        </button>
+    </p-footer>
+</p-dialog>
+

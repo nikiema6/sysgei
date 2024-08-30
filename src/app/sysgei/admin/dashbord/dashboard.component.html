@@ -1,0 +1,21 @@
+<div class="layout-dashboard">
+    <div class="container-fluid dash-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="intro-box">
+                    <div class="intro-box-name intro-box-greeting">Bienvenue
+                       <span class="fw-bold" *ngIf="userProfile?.firstName !== undefined">, {{userProfile?.firstName}}</span>
+                       <span class="fw-bold" *ngIf="userProfile?.lastName !== undefined">{{' ' + userProfile?.lastName}}</span>
+                    </div>
+                    <div class="intro-box-detail"></div>
+                    
+                </div>
+
+            </div>
+            <div class="col-sm-12 text-center">
+                <h2><span class="mot">Sys</span>tème de <span class="mot">G</span>estion des
+                    <span class="mot">E</span>quipements <span class="mot">I</span>nformatiques</h2>
+            </div>
+        </div>
+    </div>
+</div>

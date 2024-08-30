@@ -1,0 +1,81 @@
+<div class="col-sm-12">
+    <div class="card">
+      <p-toolbar styleClass="mb-2">
+        <div class="p-toolbar-group-start">
+          <div class="my-2">
+            <h5 class="text-primary fw-bold">Détail Mouvement</h5>
+          </div>
+        </div>
+        <div class="p-toolbar-group-end">
+        </div>
+      </p-toolbar>
+
+      <div class="row g-1">
+        <div class="col-sm-9">
+          <div class="card">
+            <div class="row">
+              <div class="col-sm-4 p-fluid" *ngIf="acquisitionList.length > 0">
+                <div class="field mt-2">
+                  <label class="fw-bold fs-5">Sélectionner une acquisition</label>
+                  <p-dropdown [options]="ddAcquisition" [style]="{'width': '100%'}"
+                             [autoDisplayFirst]="false" appendTo="body"
+                             placeholder="Selectionner une acquisition"
+                             [filter]="true" [showClear]="true"
+                             [(ngModel)]="selectedAcquisition" (ngModelChange)="onSelectAcquisition($event)">
+                  </p-dropdown>
+                </div>
+              </div>
+              <!-- <div class="col-sm-4 p-fluid" *ngIf="mouvementList.length > 0">
+                <div class="field mt-2">
+                  <label class="fw-bold fs-5">Sélectionner un mouvement </label>
+                  <p-dropdown [options]="ddMouvement" [style]="{'width': '100%'}"
+                             [autoDisplayFirst]="false" appendTo="body"
+                             placeholder="Selectionner un mouvement"
+                             [filter]="true" [showClear]="true"
+                             [(ngModel)]="selectedMouvement" (ngModelChange)="onSelectMouvement($event)">
+                  </p-dropdown>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 text-center">
+          <div class="card h-100">
+            <div class="mt-3">
+              <button pButton label="Rechercher" icon="pi pi-search"
+                       pTooltip="Lancer la recherche"
+                       [tooltipPosition]="'top'"
+                       class="p-button-primary" (click)="searchEquipments()">
+              </button>
+              <button pButton label="Envoyer" icon="pi pi-send"
+                       pTooltip="Envoyer les informations"
+                       [tooltipPosition]="'top'"
+                       class="p-button-success ms-1" (click)="onSend()">
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <ng-template [ngIf]="equipements.length > 0">
+            <h2 class="text-center text-primary fw-bold">Informations des équipements</h2>
+            <ul class="list-group">
+              <li *ngFor="let equipement of equipements" class="list-group-item">
+                <span class="font-weight-bold fs-5">Libellé : </span>{{ equipement.libelle }}<br>
+                <span class="font-weight-bold fs-5">Sous-famille : </span>{{ equipement.sousFamille }}<br>
+                <span class="font-weight-bold fs-5">Caractéristique : </span>{{ equipement.infocaracteristique }}<br>
+                <span class="font-weight-bold fs-5">Quantité : </span>{{ equipement.quantite }}
+              </li>
+            </ul>
+          </ng-template>
+          <ng-template [ngIf]="selectedMouvement && !equipements.length">
+            <h2 class="text-center text-primary fw-bold">Informations de mouvement</h2>
+            <p>ID de mouvement : {{ selectedMouvement.id }}</p>
+          </ng-template>
+          <ng-template [ngIf]="selectedAcquisition && !equipements.length">
+            <h2 class="text-center text-primary fw-bold">Informations d'acquisition</h2>
+            <p>ID d'acquisition : {{ selectedAcquisition.id }}</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
